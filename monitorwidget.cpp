@@ -42,8 +42,9 @@ void MonitorWidget::paintEvent(QPaintEvent * e)
 
     for(int i = 0 ; i < positions.size(); i ++)
     {
-        positions[i].setX(positions.at(i).x()-offset);
-        if(positions[i].rx() < 0)
+        // сдвигаем точки вправо
+        positions[i].setX(positions.at(i).x()+offset);
+        if(positions[i].rx() > w)
             positions.removeOne(positions[i]);
     }
 
@@ -82,17 +83,16 @@ void MonitorWidget::paintEvent(QPaintEvent * e)
 
     // добавляем новую стартовую позицию (крайний левый верхний угол линии)
     qreal Y = pin->level() ? HIGH : LOW;
-    qreal x = w - offset;
-    positions.append(QPointF(x, Y));
+    positions.append(QPointF(0, Y));
 
     // соединяем все точки
     for(int i = 0; i < positions.size(); i++)
     {
         // текущая и следующая точки
         QPointF current = positions.at(i);
-        QPointF next = i+1 < positions.size() ? positions.at(i+1) : QPointF(x + offset, Y);
+        QPointF next = i+1 < positions.size() ? positions.at(i+1) : QPointF(0, Y);
 
-        // если произошел переход через фронт - нарисовать вертикальную линию фронта и переместиться к ней
+        // если произошел переход через фронт - нарисовать вертикальную линию фронта и переместиться на Y координату фронта
         if(current.ry() != next.ry())
         {
             QPointF front =  QPointF(current.rx(), current.ry() == HIGH? LOW : HIGH);
@@ -101,7 +101,6 @@ void MonitorWidget::paintEvent(QPaintEvent * e)
         }
         p.drawLine(current,next);
     }
-
     e->accept();
 }
 
