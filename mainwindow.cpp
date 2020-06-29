@@ -26,9 +26,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->gpo3->setChecked(Pin::byName("GPO3")->level());
 
 
-    ui->notation->addItem("HEX", qVariantFromValue(16));
-    ui->notation->addItem("DEC", qVariantFromValue(10));
-    ui->notation->addItem("BIN", qVariantFromValue(2));
+    ui->notation->addItem("HEX", QVariant::fromValue(16));
+    ui->notation->addItem("DEC", QVariant::fromValue(10));
+    ui->notation->addItem("BIN", QVariant::fromValue(2));
 
     // Наполняем комбобоксы и привязываем их к существующим пинам
     for(int i = 0; i < 4; i ++)
@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
         Pin * pin = Pin::byName(QString("GPI%1").arg(i));
 
         ui->monitorPin->addItem(pin->name);
-        ui->monitorPin->setItemData(ui->monitorPin->count()-1, qVariantFromValue((void *) pin), Qt::UserRole);
+        ui->monitorPin->setItemData(ui->monitorPin->count()-1, QVariant::fromValue((void *) pin), Qt::UserRole);
     }
 
     for(int i = 0; i < 4; i ++)
@@ -44,13 +44,13 @@ MainWindow::MainWindow(QWidget *parent)
         Pin * pin = Pin::byName(QString("GPO%1").arg(i));
 
         ui->implPin->addItem(pin->name);
-        ui->implPin->setItemData(ui->implPin->count()-1, qVariantFromValue((void *)pin), Qt::UserRole);
+        ui->implPin->setItemData(ui->implPin->count()-1, QVariant::fromValue((void *)pin), Qt::UserRole);
 
         ui->pulsePin->addItem(pin->name);
-        ui->pulsePin->setItemData(ui->pulsePin->count()-1, qVariantFromValue((void *)pin), Qt::UserRole);
+        ui->pulsePin->setItemData(ui->pulsePin->count()-1, QVariant::fromValue((void *)pin), Qt::UserRole);
 
         ui->monitorPin->addItem(pin->name);
-        ui->monitorPin->setItemData(ui->monitorPin->count()-1, qVariantFromValue((void *) pin), Qt::UserRole);
+        ui->monitorPin->setItemData(ui->monitorPin->count()-1, QVariant::fromValue((void *) pin), Qt::UserRole);
     }
 
     startTimer(50);
@@ -108,7 +108,7 @@ void MainWindow::addPinItem(Pin * pin)
     t->setItem(0,2, new QTableWidgetItem(QString::number(pin->bit)));
     t->setItem(0,3, new QTableWidgetItem());
     t->setItem(0,4, new QTableWidgetItem());
-    t->item(0,0)->setData(Qt::UserRole, qVariantFromValue((void*)pin));
+    t->item(0,0)->setData(Qt::UserRole, QVariant::fromValue((void*)pin));
 }
 
 void MainWindow::on_gpo0_clicked(bool checked)

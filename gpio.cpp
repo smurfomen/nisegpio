@@ -19,9 +19,14 @@ QLibrary hInpOutDll;
 #include <QFile>
 void InitInpOut()
 {
-
-    QFile lib("inpout32.dll");
-    QFile rec(":/lib/inpout32.dll");
+    QString libname =
+#ifdef Q_OS_WIN64
+    "inpoutx64.dll";
+#else
+    "inpout32.dll";
+#endif
+    QFile lib(libname);
+    QFile rec(":/lib/" + libname);
 
     if(rec.open(QIODevice::ReadOnly))
     {
@@ -38,17 +43,6 @@ void InitInpOut()
                 gfpInp32                = (lpInp32)                 hInpOutDll.resolve("Inp32");
                 gfpIsInpOutDriverOpen   = (lpIsInpOutDriverOpen)    hInpOutDll.resolve("IsInpOutDriverOpen");
                 gfpIsXP64Bit            = (lpIsXP64Bit)             hInpOutDll.resolve("IsXP64Bit");
-            }
-            else
-            {
-                hInpOutDll.setFileName(QDir::currentPath() + "\\inpout32.dll");
-                if((libloaded = hInpOutDll.load()))
-                {
-                    gfpOut32                = (lpOut32)                 hInpOutDll.resolve("Out32");
-                    gfpInp32                = (lpInp32)                 hInpOutDll.resolve("Inp32");
-                    gfpIsInpOutDriverOpen   = (lpIsInpOutDriverOpen)    hInpOutDll.resolve("IsInpOutDriverOpen");
-                    gfpIsXP64Bit            = (lpIsXP64Bit)             hInpOutDll.resolve("IsXP64Bit");
-                }
             }
         }
         rec.close();
