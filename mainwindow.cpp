@@ -167,18 +167,22 @@ void MainWindow::on_putimpl_clicked()
 {
     switch (ui->implPin->currentIndex()) {
     case 0 :
+        on_gpo0_clicked(false);
         on_gpo0_clicked(true);
         QTimer::singleShot(ui->implWidth->value()*1000,[this]{on_gpo0_clicked(false);});
         break;
     case 1:
+        on_gpo1_clicked(false);
         on_gpo1_clicked(true);
         QTimer::singleShot(ui->implWidth->value()*1000,[this]{on_gpo1_clicked(false);});
         break;
     case 2:
+        on_gpo2_clicked(false);
         on_gpo2_clicked(true);
         QTimer::singleShot(ui->implWidth->value()*1000,[this]{on_gpo2_clicked(false);});
         break;
     case 3 :
+        on_gpo3_clicked(false);
         on_gpo3_clicked(true);
         QTimer::singleShot(ui->implWidth->value()*1000,[this]{on_gpo3_clicked(false);});
         break;
@@ -196,7 +200,11 @@ void MainWindow::on_pulseEnable_clicked(bool checked)
         pulseTime();
     }
     else
+    {
         pulseTmr->stop();
+        Pin * p = (Pin*) ui->pulsePin->itemData(ui->pulsePin->currentIndex(), Qt::UserRole).value<void*>();
+        p->Out(false);
+    }
 }
 
 void MainWindow::pulseTime()
