@@ -17,14 +17,25 @@ bool libloaded = false;
 QLibrary hInpOutDll;
 #include <QDir>
 #include <QFile>
-void InitInpOut()
+bool InitInpOut()
 {
-    QString libname =
+    QString libname;
+#ifdef Q_OS_WIN
+    bool isx64 = false;
+
 #ifdef Q_OS_WIN64
-    "inpoutx64.dll";
+    isx64 = true;
+#endif // Q_OS_WIN64
+
+    if(isx64)
+        libname = "inpoutx64.dll";
+    else
+        libname = "inpout32.dll";
 #else
-    "inpout32.dll";
-#endif
+    return libloaded;
+#endif // Q_OS_WIN
+
+
     QFile lib(libname);
     QFile rec(":/lib/" + libname);
 
@@ -47,6 +58,7 @@ void InitInpOut()
         }
         rec.close();
     }
+    return libloaded;
 }
 
 int IsInpOutDriverOpen()

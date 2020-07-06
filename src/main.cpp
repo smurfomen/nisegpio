@@ -6,16 +6,15 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    InitInpOut();
-    if(!libloaded)
-    {
-        QMessageBox::warning(nullptr,"ОШИБКА", "Ошибка загрузки библиотеки inpout32.dll.\nПопробуйте перезапустить программу с правами администратора.");
-        exit(0);
-    }
-    else
+    if(InitInpOut())
     {
         MainWindow w;
         w.show();
         return a.exec();
+    }
+    else
+    {
+        QMessageBox::warning(nullptr,"ОШИБКА", "Ошибка загрузки библиотеки inpout32.dll.\nПопробуйте перезапустить программу с правами администратора.");
+        return 0;
     }
 }

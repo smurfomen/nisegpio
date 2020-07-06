@@ -8,7 +8,7 @@ int inp(int port);
 void outp(int port, short value);
 }
 int IsInpOutDriverOpen();
-void InitInpOut();
+bool InitInpOut();
 
 
 int InpPort(short port);
